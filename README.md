@@ -1,2 +1,2 @@
 # impulsive
-A python script for generating short .wav files for use with a convolution reverb
+A python script that ge erates short .wav files for use with a convolution reverb
