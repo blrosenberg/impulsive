@@ -118,8 +118,9 @@ def make_impulse(generators, seconds=1, combination='add', trunc=100, square=0):
     return out
 ##Output
 def save_wav(signal):
-    most_recent_file_num = max([int(i) for i in re.findall('\d+', "".join(os.listdir(filepath)))])
-    filename = str(most_recent_file_num + 1) + "_".join(signaltype) + '.wav'
+    length = str(len(signal)/samplerate)
+    most_recent_file_num = max([int(i) for i in re.findall(r'\d+', "".join(os.listdir(filepath)))])
+    filename = str(most_recent_file_num + 1) + "_".join(signaltype) + '-' + length + 'second' + (length[0]!='1')*'s' + '.wav'
     signal = np.array(signal)
     wavfile.write(filepath+filename, samplerate, signal)
 ##Randomization
@@ -133,7 +134,17 @@ def impulsive():
     if r.randint(0,100) > 50:
         trunc_range = [100]
     gens = []
-    for i in range(1, r.randint(2,len(options['generators']))):
+    high = len(options['generators'])
+    ##chance for wilder waveforms
+    for i in range(3):
+        num = r.randint(1,100)
+        if num < 20:
+            high *= 2
+        if num < 10:
+            high *= 2
+        if num < 2:
+            high *= 2
+    for i in range(1, r.randint(2,high)):
         gens.append(options['generators'][r.randint(0,len(options['generators'])-1)])
     for i in range(len(gens)):
         if 'sin' in gens[i]:
